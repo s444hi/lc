@@ -1,0 +1,22 @@
+class Solution {
+    public int[] twoSum(int[] numbers, int target) {
+        int[] answer = new int[2];
+        int leftIndex = 0;
+        int left = numbers[leftIndex];
+        int rightIndex = numbers.length - 1;
+        int right = numbers[rightIndex];
+
+        while (left + right != target) {
+            if (left + right > target) {
+                rightIndex -= 1;
+                right = numbers[rightIndex];
+            } else {
+                leftIndex += 1;
+                left = numbers[leftIndex];
+            }
+        }
+        answer[0] = leftIndex + 1;
+        answer[1] = rightIndex + 1;
+        return answer;
+    }
+}
