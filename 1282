@@ -1,0 +1,30 @@
+class Solution {
+    public List<List<Integer>> groupThePeople(int[] groupSizes) {
+        TreeMap<Integer, List<Integer>> map = new TreeMap<>();
+        for (int i = 0; i < groupSizes.length; i++) {
+            if (map.containsKey(groupSizes[i])) {
+                List<Integer> l = map.get(groupSizes[i]);
+                l.add(i);
+                map.put(groupSizes[i], l);
+            } else {
+                List<Integer> l = new ArrayList<>();
+                l.add(i);
+                map.put(groupSizes[i], l);
+            }
+        }
+        List<List<Integer>> ans = new ArrayList<>();
+        for (Map.Entry<Integer, List<Integer>> entry : map.entrySet()) {
+            int key = entry.getKey();
+            List<Integer> temp = entry.getValue();
+            if (temp.size() > key) {
+                for (int i = 0; i < temp.size(); i += key) {
+                    ans.add(new ArrayList<>(temp.subList(i, Math.min(i + key, temp.size()))));
+                }
+            } else {
+                ans.add(temp);
+            }
+        }
+
+        return ans;
+    }
+}
