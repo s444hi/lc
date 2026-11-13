@@ -1,0 +1,43 @@
+class Solution {
+    public long interactionCosts(int n, int[][] edges, int[] group) {
+        List<Integer>[] adj = new ArrayList[n];
+        for (int i = 0; i < n; i++) adj[i] = new ArrayList<>();
+        for (int[] e : edges) {
+            adj[e[0]].add(e[1]);
+            adj[e[1]].add(e[0]);
+        }
+
+        int[][] cnt = new int[n][21];
+        int[] total = new int[21];
+        for (int i = 0; i < n; i++) {
+            cnt[i][group[i]] = 1;
+            total[group[i]]++;
+        }
+
+        int[] parent = new int[n];
+        int[] order = new int[n];
+        parent[0] = -1;
+        int head = 0, tail = 0;
+        order[tail++] = 0;
+        while (head < tail) {
+            int u = order[head++];
+            for (int v : adj[u]) {
+                if (v != parent[u]) {
+                    parent[v] = u;
+                    order[tail++] = v;
+                }
+            }
+        }
+        long ans = 0;
+        for (int i = n - 1; i > 0; i--) {
+            int u = order[i];
+            int p = parent[u];
+            for (int g = 1; g <= 20; g++) {
+                int inside = cnt[u][g];
+                ans += (long) inside * (total[g] - inside);
+                cnt[p][g] += inside;
+            }
+        }
+        return ans;
+    }
+}
